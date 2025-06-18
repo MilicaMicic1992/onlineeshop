@@ -12,7 +12,8 @@ export default {
         'lightGray': '#F4F4F4',
         'textWhite': '#fff',
         'textDark': '#222222',
-        'lightBlue': '#B3D4E5'
+        'lightBlue': '#B3D4E5',
+        'grayColor': '#B6B6B6'
 
       }
     },

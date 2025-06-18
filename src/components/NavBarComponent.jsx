@@ -1,4 +1,5 @@
 import logo from '../assets/logo.png';
+import { Link } from 'react-router-dom'
 
 //icons
 import { CiUser, CiHeart, CiShoppingCart } from 'react-icons/ci';
@@ -11,7 +12,10 @@ function NavBarComponent() {
 	return (
 		<div className='bg-mainBlue h-full lg:h-[100px] flex items-center py-[10px]'>
 			<div className='container mx-auto flex justify-between items-center flex-col lg:flex-row gap-[10px]'>
+				
+				<Link to = '/'>
 				<img src={logo} className='w-[100px]' alt='logo' />
+				</Link>
 
 				{/*seatrchbar */}
 				<div className='bg-textWhite rounded-[20px]'>
