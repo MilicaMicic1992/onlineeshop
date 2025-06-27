@@ -9,7 +9,7 @@ const productSlice = createSlice({
     },
     reducers: {
         saveAllProductAction : (state, action) => {
-            console.log(action.payload);
+            
             state.allProducts = action.payload;
             state.isLoading = true;
         }

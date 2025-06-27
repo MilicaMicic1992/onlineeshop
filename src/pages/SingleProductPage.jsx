@@ -3,17 +3,26 @@ import ProductService from '../services/ProductService';
 import { useParams } from 'react-router-dom';
 import { Rating } from '@mui/material';
 
+import { Link } from 'react-router-dom';
+
 //icons
 import { IoCheckmark } from 'react-icons/io5';
 import { RxCross2 } from 'react-icons/rx';
 import { IoIosHeartEmpty } from 'react-icons/io';
 import { FaTruckFast } from 'react-icons/fa6';
+import { useDispatch } from 'react-redux';
+import { saveInCartAction } from '../store/cartSlice';
 
 function SingleProductPage() {
 	const [singleProduct, setSingleProduct] = useState({});
 	const [isLoading, setIsLoading] = useState(false);
 	const [currentImage, setCurrentImage] = useState(0);
-    const [countProduct, setCountProduct] = useState(1)
+	const [countProduct, setCountProduct] = useState(1);
+
+
+	//dispatch for redux
+
+	const dispatch = useDispatch ();
 
 	let { id } = useParams();
 
@@ -30,13 +39,24 @@ function SingleProductPage() {
 		setCurrentImage(index);
 	}
 
+	// Function koja prosledjuje proizvod u cart redux
+    
+	function handleProductCart(){
+dispatch (saveInCartAction(singleProduct))
+	}
+
+
 	return (
 		<div className='px-[20px]'>
 			{isLoading ? (
 				<div className='container mx-auto flex flex-col lg:flex-row gap-[40px] lg:gap-[20px]'>
 					{/* Left side */}
 					<div className='w-full lg:w-[50%] flex flex-col items-center'>
-						<img src={singleProduct.images[currentImage]} alt='' className='max-h-[400px]'/>
+						<img
+							src={singleProduct.images[currentImage]}
+							alt=''
+							className='max-h-[]'
+						/>
 
 						<div className='flex items-center justify-between gap-[5px]'>
 							{singleProduct.images.map((el, index) => {
@@ -120,23 +140,26 @@ function SingleProductPage() {
 						</div>
 
 						<div className='flex items-center mt-[30px gap-[20px]'>
-							<button className='bg-mainYellow text-textWhite px-[26px] py-[12px] rounded-lg'>
+							<Link
+								to={'/cart'}
+								className='bg-mainYellow text-textWhite px-[26px] py-[12px] rounded-lg
+								'
+								onClick={handleProductCart}>
 								Add to chart
-							</button>
+							</Link>
 							<div className='bg-[#eee] p-[10px] rounded-full'>
 								<IoIosHeartEmpty />
 							</div>
 						</div>
-                        <hr className='my-[20px]' />
-                        <div className='flex items-center gap-[10px]'>
-                            <FaTruckFast />
-                            <span>
-                                {singleProduct.shippingInformation}
-                            </span>
-                        </div>
+						<hr className='my-[20px]' />
+						<div className='flex items-center gap-[10px]'>
+							<FaTruckFast />
+							<span>{singleProduct.shippingInformation}</span>
+						</div>
 
-                        <p className='font font-semibold text-gray-500'>{singleProduct.returnPolicy}</p>
-
+						<p className='font font-semibold text-gray-500'>
+							{singleProduct.returnPolicy}
+						</p>
 					</div>
 				</div>
 			) : (
