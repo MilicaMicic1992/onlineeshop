@@ -12,8 +12,9 @@ import { useSelector } from 'react-redux';
 
 function CartPage() {
 
+  let cart = JSON.parse(localStorage.getItem('cart_item')) || [];
 
- const {cart} = useSelector(state => state.cartStore);
+ //const {cart} = useSelector(state => state.cartStore);
 
 
   return (
