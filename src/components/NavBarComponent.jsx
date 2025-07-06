@@ -1,35 +1,42 @@
 import logo from '../assets/logo.png';
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom';
 
 import { useSelector } from 'react-redux';
 
 //icons
 import { CiUser, CiHeart, CiShoppingCart } from 'react-icons/ci';
 
-
 //clerk
-import { SignedIn, SignedOut, SignInButton, UserButton } from '@clerk/clerk-react'
+import {
+	SignedIn,
+	SignedOut,
+	SignInButton,
+	UserButton,
+} from '@clerk/clerk-react';
 import { useEffect, useState } from 'react';
 
 function NavBarComponent() {
-	const[totalProductSL, setTotalProductSL] = useState(0);
+	const [totalProductSL, setTotalProductSL] = useState(0);
 	//let totalProduct = JSON.parse(localStorage.getItem('cart_total'))
-	const {totalProduct} = useSelector((state) => state.cartStore)
+	const { totalProduct} = useSelector((state) => state.cartStore);
+	const {favoriteTotal} = useSelector ((state) => state.favoriteStore)
 
-	useEffect(()=>{
-		if(totalProduct){
-			setTotalProductSL(JSON.parse(localStorage.getItem('cart_total')))
+
+	useEffect(() => {
+		let isTotal = JSON.parse(localStorage.getItem('cart_total'));
+
+		if(isTotal){
+			setTotalProductSL(isTotal)
+		}else{
+			setTotalProductSL(0);
 		}
-	},[totalProduct])
-
-
+	}, [totalProduct]);
 
 	return (
 		<div className='bg-mainBlue h-full lg:h-[100px] flex items-center py-[10px]'>
 			<div className='container mx-auto flex justify-between items-center flex-col lg:flex-row gap-[10px]'>
-				
-				<Link to = '/'>
-				<img src={logo} className='w-[100px]' alt='logo' />
+				<Link to='/'>
+					<img src={logo} className='w-[100px]' alt='logo' />
 				</Link>
 
 				{/*seatrchbar */}
@@ -53,18 +60,18 @@ function NavBarComponent() {
 							<SignInButton />
 						</SignedOut>
 						<SignedIn>
-							<UserButton showName/>
+							<UserButton showName />
 						</SignedIn>
-					</div>
+				</div>
 
 					<div className='flex items-center gap-[5px]'>
 						<CiHeart color='white' size={25} />
 						<span className='bg-mainYellow text-textWhite rounded-full w-[20px] h-[20px] flex items-center justify-center'>
-							0
+							{favoriteTotal}
 						</span>
-						<span className='text-textWhite text-[18px]'>
+						<Link to='/favorite' className='text-textWhite text-[18px]'>
 							Favourite
-						</span>
+						</Link>
 					</div>
 
 					<div className='flex items-center gap-[5px]'>
@@ -72,7 +79,9 @@ function NavBarComponent() {
 						<span className='bg-mainYellow text-textWhite rounded-full w-[20px] h-[20px] flex items-center justify-center'>
 							{totalProductSL}
 						</span>
-						<Link to='/cart' className='text-textWhite text-[18px]'>Cart</Link>
+						<Link to='/cart' className='text-textWhite text-[18px]'>
+							Cart
+						</Link>
 					</div>
 				</div>
 			</div>

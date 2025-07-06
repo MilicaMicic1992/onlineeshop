@@ -12,6 +12,7 @@ import { IoIosHeartEmpty } from 'react-icons/io';
 import { FaTruckFast } from 'react-icons/fa6';
 import { useDispatch } from 'react-redux';
 import { saveInCartAction } from '../store/cartSlice';
+import { updateFavoriteAction } from '../store/favoriteSlice';
 
 function SingleProductPage() {
 	const [singleProduct, setSingleProduct] = useState({});
@@ -148,7 +149,9 @@ dispatch (saveInCartAction(singleProduct))
 								Add to chart
 							</Link>
 							<div className='bg-[#eee] p-[10px] rounded-full'>
-								<IoIosHeartEmpty />
+								<IoIosHeartEmpty size={30} onClick={() => dispatch 
+									(updateFavoriteAction(singleProduct))
+								} />
 							</div>
 						</div>
 						<hr className='my-[20px]' />
