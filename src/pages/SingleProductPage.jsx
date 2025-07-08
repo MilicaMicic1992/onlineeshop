@@ -4,6 +4,7 @@ import { useParams } from 'react-router-dom';
 import { Rating } from '@mui/material';
 
 import { Link } from 'react-router-dom';
+import { useSelector } from 'react-redux'
 
 //icons
 import { IoCheckmark } from 'react-icons/io5';
@@ -13,6 +14,7 @@ import { FaTruckFast } from 'react-icons/fa6';
 import { useDispatch } from 'react-redux';
 import { saveInCartAction } from '../store/cartSlice';
 import { updateFavoriteAction } from '../store/favoriteSlice';
+import { FaHeart } from "react-icons/fa";
 
 function SingleProductPage() {
 	const [singleProduct, setSingleProduct] = useState({});
@@ -20,10 +22,13 @@ function SingleProductPage() {
 	const [currentImage, setCurrentImage] = useState(0);
 	const [countProduct, setCountProduct] = useState(1);
 
+	const [favoriteIdIcon, setFavoriteIdIcon] = useState(null);
+	const { allFavorite } = useSelector((state) => state.favoriteStore);
+
 
 	//dispatch for redux
 
-	const dispatch = useDispatch ();
+	const dispatch = useDispatch();
 
 	let { id } = useParams();
 
@@ -36,16 +41,28 @@ function SingleProductPage() {
 			.catch((err) => console.log(err));
 	}, []);
 
+	useEffect(() => {
+		if (allFavorite.length > 0) {
+			allFavorite.find((item) => {
+				if (item.id === singleProduct.id) {
+					setFavoriteIdIcon(item.id);
+					return;
+				}
+			});
+		} else {
+			setFavoriteIdIcon(null);
+		}
+	}, [allFavorite]);
+
 	function handleImage(index) {
 		setCurrentImage(index);
 	}
 
 	// Function koja prosledjuje proizvod u cart redux
-    
-	function handleProductCart(){
-dispatch (saveInCartAction(singleProduct))
-	}
 
+	function handleProductCart() {
+		dispatch(saveInCartAction(singleProduct));
+	}
 
 	return (
 		<div className='px-[20px]'>
@@ -149,9 +166,23 @@ dispatch (saveInCartAction(singleProduct))
 								Add to chart
 							</Link>
 							<div className='bg-[#eee] p-[10px] rounded-full'>
-								<IoIosHeartEmpty size={30} onClick={() => dispatch 
-									(updateFavoriteAction(singleProduct))
-								} />
+								
+								{favoriteIdIcon === parseInt(id) ? (
+									<FaHeart
+										color='red'
+										size={30}
+										onClick={() =>
+											dispatch(updateFavoriteAction(singleProduct))
+										}
+									/>
+								) : (
+									<FaHeart
+										size={30}
+										onClick={() =>
+											dispatch(updateFavoriteAction(singleProduct))
+										}
+									/>
+								)}
 							</div>
 						</div>
 						<hr className='my-[20px]' />

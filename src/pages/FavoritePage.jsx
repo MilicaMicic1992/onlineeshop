@@ -5,7 +5,7 @@ import CardComponent from '../components/CardComponent'
 function FavoritePage() {
   const {allFavorite} = useSelector ((state) => state.favoriteStore)
   return (
-    <div>
+    <div className='container mx-auto mt-[50px] flex items-center gap-5'>
       {allFavorite.map((favoriteItem)=> {
         return <CardComponent key={favoriteItem.id} product={favoriteItem}  />
       })}
